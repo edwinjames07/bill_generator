@@ -67,7 +67,7 @@ function readHTML() {
 	var finalAmount = grandTotal+ mgrandTotal;
 	finalAmount =Math.round((finalAmount + Number.EPSILON) * 100) / 100
 	  
-    var amountInWords =inWords(finalAmount); 
+    var amountInWords =amountInWord(finalAmount); 
 	var divContents = $("#bill").html();
 	divContents =divContents.replaceAll("finalAmount", finalAmount);
 	divContents =divContents.replaceAll("rowTotalTax", rowTotalTax);
@@ -78,7 +78,7 @@ function readHTML() {
 	divContents =divContents.replaceAll("grandTotal", grandTotal);
 	divContents =divContents.replaceAll("totalTax", totalTax);
 	divContents =divContents.replaceAll("totalAmount", totalAmount);
-	divContents =divContents.replaceAll("amountInWords", "");
+	divContents =divContents.replaceAll("amountInWords", amountInWords);
 
 	divContents =divContents.replaceAll("invioceNumber", invoiceNumber);
 	divContents =divContents.replaceAll("invioceDate", invoiceDate);
@@ -96,21 +96,72 @@ function readHTML() {
 	//printWindow.print();
 }
 
-var a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
-var b = ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
-
-function inWords (num) {
-    if ((num = num.toString()).length > 9) return 'overflow';
-    n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
-    if (!n) return; var str = '';
-    str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
-    str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : '';
-    str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : '';
-    str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
-    str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'only ' : '';
-    return str;
+function amountInWord(num){
+	if(num.toString().includes(".")){
+		var splittedNum =num.toString().split('.')
+		var nonDecimal=splittedNum[0]
+		var decimal=splittedNum[1]
+		var value=price_in_words(Number(nonDecimal))+" and "+price_in_words(Number(decimal))+" paise";
+		return value;
+	}else{
+		return price_in_words(num);
+	}
+	
 }
-
+function price_in_words(price) {
+	var sglDigit = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"],
+	  dblDigit = ["Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"],
+	  tensPlace = ["", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"],
+	  handle_tens = function(dgt, prevDgt) {
+		return 0 == dgt ? "" : " " + (1 == dgt ? dblDigit[prevDgt] : tensPlace[dgt])
+	  },
+	  handle_utlc = function(dgt, nxtDgt, denom) {
+		return (0 != dgt && 1 != nxtDgt ? " " + sglDigit[dgt] : "") + (0 != nxtDgt || dgt > 0 ? " " + denom : "")
+	  };
+  
+	var str = "",
+	  digitIdx = 0,
+	  digit = 0,
+	  nxtDigit = 0,
+	  words = [];
+	if (price += "", isNaN(parseInt(price))) str = "";
+	else if (parseInt(price) > 0 && price.length <= 10) {
+	  for (digitIdx = price.length - 1; digitIdx >= 0; digitIdx--) switch (digit = price[digitIdx] - 0, nxtDigit = digitIdx > 0 ? price[digitIdx - 1] - 0 : 0, price.length - digitIdx - 1) {
+		case 0:
+		  words.push(handle_utlc(digit, nxtDigit, ""));
+		  break;
+		case 1:
+		  words.push(handle_tens(digit, price[digitIdx + 1]));
+		  break;
+		case 2:
+		  words.push(0 != digit ? " " + sglDigit[digit] + " Hundred" + (0 != price[digitIdx + 1] && 0 != price[digitIdx + 2] ? " and" : "") : "");
+		  break;
+		case 3:
+		  words.push(handle_utlc(digit, nxtDigit, "Thousand"));
+		  break;
+		case 4:
+		  words.push(handle_tens(digit, price[digitIdx + 1]));
+		  break;
+		case 5:
+		  words.push(handle_utlc(digit, nxtDigit, "Lakh"));
+		  break;
+		case 6:
+		  words.push(handle_tens(digit, price[digitIdx + 1]));
+		  break;
+		case 7:
+		  words.push(handle_utlc(digit, nxtDigit, "Crore"));
+		  break;
+		case 8:
+		  words.push(handle_tens(digit, price[digitIdx + 1]));
+		  break;
+		case 9:
+		  words.push(0 != digit ? " " + sglDigit[digit] + " Hundred" + (0 != price[digitIdx + 1] || 0 != price[digitIdx + 2] ? " and" : " Crore") : "")
+	  }
+	  str = words.reverse().join("")
+	} else str = "";
+	return str
+  
+  }
 function converHTMLFileToPDF() {
 	const { jsPDF } = window.jspdf;
 	var doc = new jsPDF('l', 'mm', [ 595.28,  841.89])
