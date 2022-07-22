@@ -1,0 +1,154 @@
+#container {
+    -webkit-font-smoothing: antialiased;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: .9em;
+    color: #1e2a28;
+    width: 90%;
+    margin: 0 auto;
+    padding: 12px 12px 0px 36px;
+}
+
+.input-form {
+    background: #ffffff;
+    padding: 10px 25px;
+    border-radius: 3px;
+    text-align: left;
+    border: #ccc 1px solid;
+}
+
+.row {
+    margin: 18px 0;
+}
+
+.input-file {
+    border-radius: 3px;
+    border: #a6a6a6 1px solid;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.btn-preview {
+    padding: 10px 30px;
+    border-radius: 3px;
+    display: inline-block;
+    cursor: pointer;
+    color: #211c1c;
+    background-color: #36de5c;
+    border: #27a544 1px solid;
+}
+
+.btn-generate {
+    padding: 10px 30px;
+    border-radius: 3px;
+    display: inline-block;
+    cursor: pointer;
+    color: #211c1c;
+    background-color: #36de5c;
+    border: #27a544 1px solid;
+    display: none;
+}
+
+.preview {
+    display: none;
+    padding: 20px;
+    border-radius: 3px;
+    box-shadow: 0 1px 6px rgb(32 33 36/ 28%);
+    border-color: rgba(223, 225, 229, 0);
+}
+
+.heading {
+    text-align: center;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.error {
+    color: #ee0000;
+    margin-left: 10px;
+}
+.input-box{
+    padding: 10px 10px;
+    border-radius: 1px;
+    display: inline-block;
+    cursor: pointer;
+    color: #211c1c;
+}
+
+table {
+    border: 1px solid black;
+    width: 100%;
+}
+
+.table-inner {
+    border: 1px solid black;
+}
+
+.center {
+    text-align: center;
+}
+
+.heading {
+    font-size: 150%;
+}
+
+.bottom_center {
+    vertical-align: bottom;
+    text-align: center;
+}
+
+.top_center {
+    vertical-align: top;
+    text-align: center;
+}
+
+.top_right {
+    vertical-align: top;
+    text-align: right;
+}
+
+.top_left {
+    vertical-align: top;
+    text-align: left;
+}
+
+.table-inner {
+    border-collapse: collapse;
+}
+
+.table-bottom {
+    border-bottom: 1px solid black;
+}
+
+.table-bottom-hight {
+    border-bottom: 1px solid black;
+    line-height: 20px;
+}
+
+.table-bottom-total {
+    border-bottom: 1px solid black;
+    line-height: 25px;
+}
+
+.table-right {
+    border-right: 1px solid black;
+}
+
+.table-bottom-total>td {
+    border-right: 1px solid black;
+}
+
+.table-bottom-hight>td {
+    border-right: 1px solid black;
+    text-align: center;
+}
+
+.widhth10 {
+    width: 10px;
+}
+
+.padding {
+    padding-left: 8px;
+}
