@@ -68,7 +68,9 @@ function readHTML() {
 	finalAmount =Math.round((finalAmount + Number.EPSILON) * 100) / 100
 	  
     var amountInWords =amountInWord(finalAmount); 
+	var deliveryAmount =amountInWord(totalAmount); 
 	var divContents = $("#bill").html();
+
 	divContents =divContents.replaceAll("finalAmount", finalAmount);
 	divContents =divContents.replaceAll("rowTotalTax", rowTotalTax);
 	divContents =divContents.replaceAll("rowTotal", rowTotal);
@@ -79,12 +81,23 @@ function readHTML() {
 	divContents =divContents.replaceAll("totalTax", totalTax);
 	divContents =divContents.replaceAll("totalAmount", totalAmount);
 	divContents =divContents.replaceAll("amountInWords", amountInWords);
-
+	
 	divContents =divContents.replaceAll("invioceNumber", invoiceNumber);
 	divContents =divContents.replaceAll("invioceDate", invoiceDate);
 	divContents =divContents.replaceAll("itemQuantity", quantity);
 	divContents =divContents.replaceAll("itemRate", rate);
 	divContents =divContents.replaceAll("shopDetails", shopDetails);
+
+	var deliveryContents = $("#delivery").html();
+	deliveryContents =deliveryContents.replaceAll("deliveryAmount", deliveryAmount);
+	deliveryContents =deliveryContents.replaceAll("invioceNumber", invoiceNumber);
+	deliveryContents =deliveryContents.replaceAll("invioceDate", invoiceDate);
+	deliveryContents =deliveryContents.replaceAll("itemQuantity", quantity);
+	deliveryContents =deliveryContents.replaceAll("itemRate", rate);
+	deliveryContents =deliveryContents.replaceAll("shopDetails", shopDetails);
+	deliveryContents =deliveryContents.replaceAll("totalAmount", totalAmount);
+
+
 	var printWindow = window.open('', '', 'height=400,width=800');
 	printWindow.document.write('<html><head><title> &nbsp;</title>');
 	printWindow.document.write('<link href="./assets/css/style.css" type="text/css" rel="stylesheet" />');
@@ -93,6 +106,15 @@ function readHTML() {
 	printWindow.document.write(divContents);
 	printWindow.document.write('</body></html>');
 	printWindow.document.close();
+
+	var printWindowSub = window.open('', '', 'height=400,width=800');
+	printWindowSub.document.write('<html><head><title> &nbsp;</title>');
+	printWindowSub.document.write('<link href="./assets/css/style.css" type="text/css" rel="stylesheet" />');
+	printWindowSub.document.write('<style type="text/css" media="print">@page{size: auto;margin: 5mm;  }</style>');
+	printWindowSub.document.write('</head><body >');
+	printWindowSub.document.write(deliveryContents);
+	printWindowSub.document.write('</body></html>');
+	printWindowSub.document.close();
 	//printWindow.print();
 }
 
